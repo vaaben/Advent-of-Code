@@ -17,7 +17,6 @@ target
 *.tex
 *.fls
 */metastore_db
-*.md
 spark/**/target/**
 spark/analytics/deps/**
 .Rproj.user
