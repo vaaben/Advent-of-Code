@@ -2,6 +2,8 @@ package com.degofedal.advent.advent2021
 
 import com.degofedal.advent.AdventOfCode
 
+import scala.collection.mutable
+
 trait Dec14 extends AdventOfCode {
 
   val rulePattern = """([\w]{2}?) -> ([\w])""".r
@@ -9,6 +11,12 @@ trait Dec14 extends AdventOfCode {
   def parseRule(s: String): (String, String) = {
     s match {
       case rulePattern(i,o) => (i,o)
+    }
+  }
+
+  def parseRuleChar(s: String): ((Char,Char), Char) = {
+    s match {
+      case rulePattern(i,o) => ((i.charAt(0),i.charAt(1)), o.head)
     }
   }
 }
@@ -32,29 +40,32 @@ object Dec14a extends Dec14 with App {
 
 object Dec14b extends Dec14 with App {
 
-  val input = inputAsStringList("2021/dec14_test.txt")
+  val input = inputAsStringList("2021/dec14.txt")
 
   val template = input.head
   val rules = input.drop(2)
-
-  println(template)
-
   val ruleMap = rules.map(parseRule(_)).toMap
 
-  println(ruleMap)
+  val templatePairs = template.sliding(2).toList.groupBy(p => p).map(g => (g._1, g._2.size.toLong))
 
-  val compound = (1 to 15).foldLeft(template)((t, i) => {
-    val c = t.sliding(2).map(s => s.head + ruleMap(s)).mkString+t.last
-    val dist = c.groupBy(c => c).map(g => (g._1, g._2.length))
+  val countMap: mutable.Map[String, Long] = collection.mutable.Map(
+    template.groupBy(c => c).map(g => (g._1.toString, g._2.size.toLong)).toSeq: _*
+  )
 
-    println(dist)
-    c
+  val pairs = (1 to 40).foldLeft(collection.mutable.Map(templatePairs.toSeq: _*))((t, i) => {
+    // magic
+    val newPairs = mutable.Map[String, Long]()
+    t.foreach(p => {
+      val c = ruleMap(p._1)
+      val lp = p._1.head+c
+      val rp = c+p._1.tail
+      countMap(c) = countMap.getOrElse(c, 0L)+p._2
+      newPairs(lp) = newPairs.getOrElse(lp,0L)+p._2
+      newPairs(rp) = newPairs.getOrElse(rp,0L)+p._2
+    })
+    newPairs
   })
 
-  /*val dist = compound.groupBy(c => c).map(g => (g._1, g._2.length))
-
-  println(dist)*/
-
-  //println(dist.maxBy(_._2)._2 - dist.minBy(_._2)._2)
+  println(countMap.maxBy(_._2)._2 - countMap.minBy(_._2)._2)
 
 }
