@@ -107,10 +107,10 @@ jobs:
           path: ${{ github.workspace }}/templates
 
       - name: 'Download artifact: clusters'
-      uses: actions/download-artifact@v2
-      with:
-        name: 'clusters'
-        path: ${{ github.workspace }}/clusters
+        uses: actions/download-artifact@v2
+        with:
+          name: 'clusters'
+          path: ${{ github.workspace }}/clusters
 
       - name: 'Download artifact: notebooks'
         uses: actions/download-artifact@v2
