@@ -14,3 +14,5 @@ libraryDependencies ++= Seq(
     Deps.config,
     Deps.scalaTest
   )
+
+lazy val analytics = Analytics.analytics

@@ -1,9 +1,16 @@
+import sbt.Def.{inputKey, spaceDelimited}
+import sbt.Setting
+
 import java.io.{ByteArrayOutputStream, PrintWriter}
 import scala.sys.process.ProcessLogger
 import scala.util.{Failure, Success, Try}
 import sys.process._
 
-class DatabricksConnect {
+object DatabricksSettings {
+
+  // CLI commands
+  val databricks = inputKey[Unit]("Execute databricks-cli commands.")
+  val databricksConnect = inputKey[Unit]("Execute databricks-connect commands.")
 
   val VERBOSE_LOGGER: Boolean = true
 
@@ -47,6 +54,26 @@ class DatabricksConnect {
     s => {
       if(!s.startsWith("Identity") && !s.startsWith("bash")) println(s)
     }
+  )
+
+  val databricksSettings: Seq[Setting[_]] = Seq(
+
+    databricks := {
+      val args: Seq[String] = spaceDelimited("<arg>").parsed
+      runDatabricksCliCommand(args) match {
+        case Success(value) => logger.out(value)
+        case Failure(e) => logger.err(e.getMessage)
+      }
+    },
+
+    databricksConnect := {
+      val args: Seq[String] = spaceDelimited("<arg>").parsed
+      runDatabricksConnectCommand(args) match {
+        case Success(value) => logger.out(value)
+        case Failure(e) => logger.err(e.getMessage)
+      }
+    }
+
   )
 
 }

@@ -1,4 +1,8 @@
+import sbt.{file, project}
 
-class Analytics {
+object Analytics {
+
+  lazy val analytics = (project in file("analytics"))
+    .settings(DatabricksSettings.databricksSettings)
 
 }
