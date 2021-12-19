@@ -67,29 +67,29 @@ jobs:
           name: 'templates'
           path: '${{ github.workspace }}/templates'
 
-        - name: 'Publish artifact: clusters'
-          uses: actions/upload-artifact@v2
-          with:
-            name: 'clusters'
-            path: '${{ github.workspace }}/clusters'
+      - name: 'Publish artifact: clusters'
+        uses: actions/upload-artifact@v2
+        with:
+          name: 'clusters'
+          path: '${{ github.workspace }}/clusters'
 
-        - name: 'Publish artifact: notebooks'
-          uses: actions/upload-artifact@v2
-          with:
-            name: 'notebooks'
-            path: '${{ github.workspace }}/notebooks'
+      - name: 'Publish artifact: notebooks'
+        uses: actions/upload-artifact@v2
+        with:
+          name: 'notebooks'
+          path: '${{ github.workspace }}/notebooks'
 
-        - name: 'Publish artifact: jobs'
-          uses: actions/upload-artifact@v2
-          with:
-            name: 'jobs'
-            path: '${{ github.workspace }}/jobs'
+      - name: 'Publish artifact: jobs'
+        uses: actions/upload-artifact@v2
+        with:
+          name: 'jobs'
+          path: '${{ github.workspace }}/jobs'
 
-        - name: 'Publish artifact: init-scripts'
-          uses: actions/upload-artifact@v2
-          with:
-            name: 'init-scripts'
-            path: '${{ github.workspace }}/init-scripts'
+      - name: 'Publish artifact: init-scripts'
+        uses: actions/upload-artifact@v2
+        with:
+          name: 'init-scripts'
+          path: '${{ github.workspace }}/init-scripts'
 
   Deploy:
     needs: Build
@@ -146,10 +146,10 @@ jobs:
               --name "${{ env.resourceGroupName }}"
             
             az deployment group create 
-             --resource-group ${{ env.resourceGroupName }}  
-             --template-file $GITHUB_WORKSPACE/ARM-Templates/azuredeploy.databricks.json 
-             --parameters @$GITHUB_WORKSPACE/ARM-Templates/parameters.databricks.json 
-             --parameters workspaceName="${{ env.databricksWorkspaceName }}"
+              --resource-group ${{ env.resourceGroupName }}  
+              --template-file $GITHUB_WORKSPACE/ARM-Templates/azuredeploy.databricks.json 
+              --parameters @$GITHUB_WORKSPACE/ARM-Templates/parameters.databricks.json 
+              --parameters workspaceName="${{ env.databricksWorkspaceName }}"
 
       - name: Deploy ARM Template (KeyVault)
         uses: azure/CLI@v1
