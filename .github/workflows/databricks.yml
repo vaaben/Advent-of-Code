@@ -9,6 +9,7 @@ jobs:
     env:
       JAVA_OPTS: -Xms2048M -Xmx2048M -Xss6M -XX:ReservedCodeCacheSize=256M -Dfile.encoding=UTF-8
       JVM_OPTS: -Xms2048M -Xmx2048M -Xss6M -XX:ReservedCodeCacheSize=256M -Dfile.encoding=UTF-8
+      DATABRICKS_CONFIG_FILE: /tmp/.databrickscfg
 
     steps:
       - uses: actions/checkout@v2
@@ -26,14 +27,10 @@ jobs:
           python -m pip list
       - name: Set databricks secrets
         run: |
-          echo $DATABRICKS_CFG_CONTENT >> ~/.databrickscfg
+          echo $DATABRICKS_CFG_CONTENT >> /tmp/.databrickscfg
         shell: bash
         env:
           $DATABRICKS_CFG_CONTENT: ${{secrets.DATABRICKS_CFG}}
-      - name: Verify databricks secrets
-        run: |
-          cat ~/.databrickscfg
-        shell: bash
       - name: Setup SBT and JDK
         uses: actions/setup-java@v2
         with:
