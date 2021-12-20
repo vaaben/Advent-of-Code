@@ -26,10 +26,14 @@ jobs:
           python -m pip list
       - name: Set databricks secrets
         run: |
-          echo $DATABRICKS_CFG_CONTENT >> /home/runner/.databrickscfg
+          echo $DATABRICKS_CFG_CONTENT >> ~/.databrickscfg
         shell: bash
         env:
           $DATABRICKS_CFG_CONTENT: ${{secrets.DATABRICKS_CFG}}
+      - name: Verify databricks secrets
+        run: |
+          cat ~/.databrickscfg
+        shell: bash
       - name: Setup SBT and JDK
         uses: actions/setup-java@v2
         with:
