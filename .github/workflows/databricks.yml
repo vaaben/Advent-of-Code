@@ -26,7 +26,7 @@ jobs:
           python -m pip list
       - name: Set databricks secrets
         run: |
-          echo $DATABRICKS_CFG_CONTENT >> .databrickscfg
+          echo $DATABRICKS_CFG_CONTENT >> /home/runner/.databrickscfg
         shell: bash
         env:
           $DATABRICKS_CFG_CONTENT: ${{secrets.DATABRICKS_CFG}}
