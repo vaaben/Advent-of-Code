@@ -30,7 +30,7 @@ jobs:
           echo $DATABRICKS_CFG_CONTENT >> /tmp/.databrickscfg
         shell: bash
         env:
-          $DATABRICKS_CFG_CONTENT: ${{secrets.DATABRICKS_CFG}}
+          DATABRICKS_CFG_CONTENT: ${{secrets.DATABRICKS_CFG}}
       - name: Setup SBT and JDK
         uses: actions/setup-java@v2
         with:
