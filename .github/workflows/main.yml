@@ -11,6 +11,8 @@ jobs:
           mkdir -p "${{ runner.tool_cache }}"
       - name: Include azure/login@v1 dependency
         uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS_DEV }}
       - name: Include azure/webapps-deploy@v2 dependency
         uses: azure/webapps-deploy@v2
       - name: Setup Node 10
