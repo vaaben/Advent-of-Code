@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
 jobs:
   upload_tool_cache:
-    runs-on: macos-latest
+    runs-on: self-hosted
     steps:
       - name: Clear any existing tool cache
         run: |
