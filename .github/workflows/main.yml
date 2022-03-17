@@ -1,13 +1,18 @@
 name: Upload Node.js 10 and 12 tool cache
-on: push
+on:
+  workflow_dispatch:
 jobs:
   upload_tool_cache:
-    runs-on: ubuntu-18.04
+    runs-on: macos-latest
     steps:
       - name: Clear any existing tool cache
         run: |
           mv "${{ runner.tool_cache }}" "${{ runner.tool_cache }}.old"
           mkdir -p "${{ runner.tool_cache }}"
+      - name: Include azure/login@v1 dependency
+        uses: azure/login@v1
+      - name: Include azure/webapps-deploy@v2 dependency
+        uses: azure/webapps-deploy@v2
       - name: Setup Node 10
         uses: actions/setup-node@v2
         with:
