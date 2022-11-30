@@ -25,6 +25,10 @@ class AdventOfCode {
     Source.fromResource(input).getLines().map(_.toInt).toList
   }
 
+  def inputAsCharList(input: String): List[Char] = {
+    inputAsString(input).toCharArray.toList
+  }
+
   def inputAsIntList(input: String, delim: String): List[Long] = {
     Source.fromResource(input).getLines().mkString.split(delim).map(_.toLong).toList
   }
