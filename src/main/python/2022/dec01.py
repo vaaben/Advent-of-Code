@@ -1,10 +1,4 @@
-package com.degofedal.advent.advent2022
-
-import com.degofedal.advent.AdventOfCode
-
-import scala.io.Source
-
-/**
+"""
 --- Day 1: Calorie Counting ---
 Santa's reindeer typically eat regular reindeer food, but they need a lot of magical energy to deliver presents on Christmas. For that, their favorite snack is a special type of star fruit that only grows deep in the jungle. The Elves have brought you on their annual expedition to the grove where the fruit grows.
 
@@ -57,35 +51,23 @@ Find the top three Elves carrying the most Calories. How many Calories are those
 Your puzzle answer was 207576.
 
 Both parts of this puzzle are complete! They provide two gold stars: **
- */
+"""
 
-class Elfs {
+with open("../../resources/2022/dec01.txt") as f:
+    content = f.readlines()
 
-  def elfSum = {
-    val elfCalories = Source.fromResource("2022/dec01.txt").getLines()
-      .foldLeft((List[List[Int]](), List[Int]()))((result, line) =>
-        if (line.isBlank) {
-          (result._2 :: result._1, List[Int]())
-        } else {
-          (result._1, line.toInt :: result._2)
-        })._1
+elf_counter = 0
+elfs = {elf_counter: 0}
+for line in content:
+    if line == '\n':
+        elf_counter += 1
+        elfs[elf_counter] = 0
+    else:
+        elfs[elf_counter] += int(line)
 
-    elfCalories.map(elf => (elf, elf.sum))
-  }
-}
+sorted_elfs = sorted(elfs.values(), reverse=True)
 
-object Dec1a extends AdventOfCode with App {
+print(f'Max calories {sorted_elfs[0]}')
 
-  val elfs = new Elfs
-
-  println(s"Max calories ${elfs.elfSum.maxBy(_._2)}")
-}
-
-object Dec1b extends AdventOfCode with App {
-
-  val elfs = new Elfs
-
-  val n = 3
-  println(s"Calories of ${n} elfs ${elfs.elfSum.sortBy(-_._2).take(n).map(_._2).sum }")
-
-}
+n = 3
+print(f'Max {n} sum {sum(sorted_elfs[:n])}')
