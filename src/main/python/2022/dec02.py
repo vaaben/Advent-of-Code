@@ -1,9 +1,4 @@
-package com.degofedal.advent.advent2022
-
-import com.degofedal.advent.AdventOfCode
-import com.degofedal.advent.advent2022.Dec2a.inputAsStringList
-
-/**
+"""
 --- Day 2: Rock Paper Scissors ---
 The Elves begin to set up camp on the beach. To decide whose tent gets to be closest to the snack storage, a giant Rock Paper Scissors tournament is already in progress.
 
@@ -48,66 +43,31 @@ Following the Elf's instructions for the second column, what would your total sc
 Your puzzle answer was 10238.
 
 Both parts of this puzzle are complete! They provide two gold stars: **
- */
+"""
 
-object GameRules {
-
-  // 1 - rock -> 0
-  // 2 - paper -> 1
-  // 3 - scissors -> 2
-  // x | 0     | 1     | 2
-  // -------------------------
-  // 0 | (1+3,1+3) | (1+0,2+6) | (1+0,3+0)
-  // 1 | (2+6,1+0) | (2+3,2+3) | (2+0,3+6)
-  // 2 | (3+6,1+6) | (3+6,2+0) | (3+3,3+3)
-  private val pointArray_1 = List(
-    List((4,4),(1,8),(7,3)),
-    List((8,1),(5,5),(2,9)),
-    List((3,7),(9,2),(6,6)))
-
-  def outcome_1(a: Int, b: Int):(Int,Int) = {
-    pointArray_1(a)(b)
-  }
-
-  // 1 - rock -> 0
-  // 2 - paper -> 1
-  // 3 - scissors -> 2
-  // x | loose     | draw      | win
-  // -------------------------
-  // 0 | (1+6,3+0) | (1+3,1+3) | (1+0,2+6)
-  // 1 | (2+6,1+0) | (2+3,2+3) | (2+0,3+6)
-  // 2 | (3+6,2+0) | (3+3,3+3) | (3+0,1+6)
-  private val pointArray_2 = List(
-    List((7,3),(4,4),(1,8)),
-    List((8,1),(5,5),(2,9)),
-    List((9,2),(6,6),(3,7)))
-
-  def outcome_2(a: Int, b: Int):(Int,Int) = {
-    pointArray_2(a)(b)
-  }
-}
-
-case class Strategy(a: Int, b: Int)
-
-object Game {
-  def play(rules: (Int,Int)=>(Int,Int)) = {
-    val entries: List[String] = inputAsStringList("2022/dec02.txt")
-
-    val strategies = entries.map(l =>
-      l.split(" ").toList match {
-        case a :: b :: nil => Strategy(a(0)-'A',b(0)-'X')
-        case _ => throw new IllegalArgumentException(s"Illegal rule ${l}")
-      })
-
-    strategies.map(s => rules(s.a, s.b)).map(_._2).sum
-  }
-}
+def strategies():
+    for line in open("../../resources/2022/dec02.txt"):
+        yield line.strip().split(" ")
 
 
-object Dec2a extends AdventOfCode with App {
-  println(s"My score: ${Game.play(GameRules.outcome_1)}")
-}
+# x | X | Y | Z
+# --------------
+# A | 4 | 8 | 3
+# B | 1 | 5 | 9
+# C | 7 | 2 | 6
+rules_1 = {'A': {'X': 4, 'Y': 8, 'Z': 3},
+           'B': {'X': 1, 'Y': 5, 'Z': 9},
+           'C': {'X': 7, 'Y': 2, 'Z': 6}}
+games_1 = [rules_1[x[0]][x[1]] for x in strategies()]
+print(f'Sum of game 1: {sum(games_1)}')
 
-object Dec2b extends AdventOfCode with App {
-  println(s"My score: ${Game.play(GameRules.outcome_2)}")
-}
+# x | X | Y | Z
+# --------------
+# A | 3 | 4 | 8
+# B | 1 | 5 | 9
+# C | 2 | 6 | 7
+rules_2 = {'A': {'X': 3, 'Y': 4, 'Z': 8},
+           'B': {'X': 1, 'Y': 5, 'Z': 9},
+           'C': {'X': 2, 'Y': 6, 'Z': 7}}
+games_2 = [rules_2[x[0]][x[1]] for x in strategies()]
+print(f'Sum of game 2: {sum(games_2)}')
