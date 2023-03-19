@@ -73,6 +73,16 @@ class CyclicQueueHS[A] {
     }
   }
 
+  def rotate(nl: Long):Unit = {
+    val n = (nl % size).toInt
+    current =
+      if(n > 0) {
+        (1 to n).foldLeft(current)((l, e) => l.cw)
+      } else {
+        (n to -1).foldLeft(current)((l, e) => l.ccw)
+      }
+  }
+
   def rotateOne: Unit = {
     current = current.cw
   }
