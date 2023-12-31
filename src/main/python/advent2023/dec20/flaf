@@ -1,0 +1,36 @@
+q = deque([("broadcaster", x, "lo") for x in broadcast_targets])
+
+    while q:
+        origin, target, pulse = q.popleft()
+
+        if target not in modules:
+            continue
+
+        module = modules[target]
+
+        if module.name == feed and pulse == "hi":
+            seen[origin] += 1
+
+            if origin not in cycle_lengths:
+                cycle_lengths[origin] = presses
+            else:
+                assert presses == seen[origin] * cycle_lengths[origin]
+
+            if all(seen.values()):
+                x = 1
+                for cycle_length in cycle_lengths.values():
+                    x = x * cycle_length // math.gcd(x, cycle_length)
+                print(x)
+                exit(0)
+
+        if module.type == "%":
+            if pulse == "lo":
+                module.memory = "on" if module.memory == "off" else "off"
+                outgoing = "hi" if module.memory == "on" else "lo"
+                for x in module.outputs:
+                    q.append((module.name, x, outgoing))
+        else:
+            module.memory[origin] = pulse
+            outgoing = "lo" if all(x == "hi" for x in module.memory.values()) else "hi"
+            for x in module.outputs:
+                q.append((module.name, x, outgoing))
